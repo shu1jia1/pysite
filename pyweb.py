@@ -7,7 +7,7 @@ import hashlib
 
 token = 'shu1jia1'
 
-@route('')
+@route('/')
 def check_signature(signature, timestamp, nonce):
     L = [timestamp, nonce, token]
     L.sort()
