@@ -3,14 +3,22 @@
 
 from bottle import route, run, template, request, error
 import bottle
+import hashlib
 
+token = 'shu1jia1'
+
+@route('/hello')
+def check_signature(signature, timestamp, nonce):
+    L = [timestamp, nonce, token]
+    L.sort()
+    s = L[0] + L[1] + L[2]
+    return hashlib.sha1(s).hexdigest() == signature
 
 @route('/hello/<name>')
 def index(name):
     return template('<b>Hello {{name}}</b>!', name=name)
 
-
-@route('/')
+@route('/hello')
 def hello():
     return 'This website is under construction...'
 
