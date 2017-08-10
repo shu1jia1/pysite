@@ -7,20 +7,26 @@ import hashlib
 
 token = 'shu1jia1'
 
+
 @route('/')
 def check_signature():
     signature = request.query.signature
     timestamp = request.query.timestamp
     nonce = request.query.nonce
-    print(signature+',timestamp:'+timestamp)
+    echostr = request.query.echostr
+    print(signature + ',timestamp:' + timestamp)
     L = [timestamp, nonce, token]
     L.sort()
     s = L[0] + L[1] + L[2]
-    return hashlib.sha1(s).hexdigest() == signature
+    if hashlib.sha1(s).hexdigest() == signature:
+        return echostr;
+    return False;
+
 
 @route('/hello/<name>')
 def index(name):
     return template('<b>Hello {{name}}</b>!', name=name)
+
 
 @route('/hello')
 def hello():
